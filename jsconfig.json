@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": "./",
+    "module": "CommonJS",
+    "moduleResolution": "node",
+    "paths": {
+      "@controllers/*": ["server/controllers/*"],
+      "@middleware/*": ["server/middleware/*"],
+      "@util/*": ["server/util/*"],
+      "Utilities/*": ["client/util/*"],
+      "Components/*": ["client/components/*"],
+      "Assets/*": ["client/assets/*"],
+      "@root/*": ["*"]
+    }
+  },
+  "include": ["server/index.ts", "models", "server/graphql", "server/types"],
+  "exclude": ["node_modules", "dist"]
+}
