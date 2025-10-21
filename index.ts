@@ -27,6 +27,7 @@ watcher.on('ready', () => {
 
 // 启动前端服务
 if (!inProduction) {
+  console.log(`we are !inProduction ${!inProduction}`)
   // 启动Vite开发服务器
   const startVite = () => {
     const vite = exec('cd client && vite') // 启动Vite

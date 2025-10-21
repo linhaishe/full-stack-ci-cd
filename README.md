@@ -132,6 +132,7 @@ full-stack-ci-cd
 │  ├─ .eslintrc.cjs
 │  ├─ README.md
 │  ├─ index.html
+│  ├─ package-lock.json
 │  ├─ package.json
 │  ├─ public
 │  │  └─ vite.svg
@@ -150,8 +151,9 @@ full-stack-ci-cd
 ├─ config
 │  └─ common.js
 ├─ index.html
-├─ index.js
+├─ index.ts
 ├─ jsconfig.json
+├─ package-lock.json
 ├─ package.json
 ├─ server
 │  ├─ .DS_Store
@@ -164,6 +166,7 @@ full-stack-ci-cd
 │  │  ├─ authors.ts
 │  │  ├─ books.ts
 │  │  └─ user.ts
+│  ├─ package-lock.json
 │  ├─ package.json
 │  ├─ types
 │  │  └─ apollo-server-express4.d.ts
