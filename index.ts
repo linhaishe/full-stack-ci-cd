@@ -37,7 +37,7 @@ if (!inProduction) {
   startVite() // 启动前端开发服务器
 } else {
   // 生产环境，提供静态文件
-  const DIST_PATH = path.resolve(__dirname, './dist')
+  const DIST_PATH = path.resolve(__dirname, './client/dist')
   const INDEX_PATH = path.resolve(DIST_PATH, 'index.html')
 
   app.use(express.static(DIST_PATH))
