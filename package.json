@@ -10,7 +10,8 @@
     "dev:client": "cd client && vite",
     "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
     "test:dev": "npx tsx index.ts",
-    "build": "npm install && cd client && npm install && vite build"
+    "build": "cd client && npm install && npm run build"
+    
   },
   "engines": {
     "node": ">=20"
