@@ -120,7 +120,6 @@ Write your frontend custom styles there. https://stackoverflow.com/questions/464
 ## Stuff left out on purpose ##
 
 Redux, GraphQL, database solution and css frameworks. You decide.
-
 ```
 full-stack-ci-cd
 ├─ .eslintignore
@@ -130,34 +129,29 @@ full-stack-ci-cd
 ├─ babel.config.js
 ├─ client
 │  ├─ .DS_Store
-│  ├─ assets
-│  │  ├─ custom.scss
-│  │  ├─ favicon-32x32.png
-│  │  └─ toskalogo_color.svg
-│  ├─ components
-│  │  ├─ .DS_Store
-│  │  ├─ App.js
-│  │  ├─ ErrorBoundary.js
-│  │  ├─ Footer.js
-│  │  ├─ FrontPage
-│  │  │  └─ index.js
-│  │  ├─ MessageView
-│  │  │  ├─ MessageForm.js
-│  │  │  ├─ MessageList.js
-│  │  │  └─ index.js
-│  │  ├─ NavBar.js
-│  │  └─ Router.js
-│  ├─ index.js
-│  └─ util
-│     ├─ common.js
-│     └─ services
-│        └─ messages.js
+│  ├─ .eslintrc.cjs
+│  ├─ README.md
+│  ├─ index.html
+│  ├─ package.json
+│  ├─ public
+│  │  └─ vite.svg
+│  ├─ src
+│  │  ├─ App.css
+│  │  ├─ App.jsx
+│  │  ├─ components
+│  │  │  ├─ Authors.jsx
+│  │  │  ├─ Books.jsx
+│  │  │  ├─ Login.jsx
+│  │  │  ├─ NewBook.jsx
+│  │  │  └─ Recommend.tsx
+│  │  ├─ main.jsx
+│  │  └─ queries.js
+│  └─ vite.config.js
 ├─ config
 │  └─ common.js
 ├─ index.html
 ├─ index.js
 ├─ jsconfig.json
-├─ package-lock.json
 ├─ package.json
 ├─ server
 │  ├─ .DS_Store
@@ -170,65 +164,7 @@ full-stack-ci-cd
 │  │  ├─ authors.ts
 │  │  ├─ books.ts
 │  │  └─ user.ts
-│  ├─ types
-│  │  └─ apollo-server-express4.d.ts
-│  ├─ types.ts
-│  └─ util
-│     ├─ common.js
-│     ├─ customErrors.js
-│     └─ routes.js
-└─ webpack.config.js
-
-```
-```
-full-stack-ci-cd
-├─ .eslintignore
-├─ .eslintrc
-├─ LICENSE
-├─ README.md
-├─ babel.config.js
-├─ client
-│  ├─ .DS_Store
-│  ├─ assets
-│  │  ├─ custom.scss
-│  │  ├─ favicon-32x32.png
-│  │  └─ toskalogo_color.svg
-│  ├─ components
-│  │  ├─ .DS_Store
-│  │  ├─ App.js
-│  │  ├─ ErrorBoundary.js
-│  │  ├─ Footer.js
-│  │  ├─ FrontPage
-│  │  │  └─ index.js
-│  │  ├─ MessageView
-│  │  │  ├─ MessageForm.js
-│  │  │  ├─ MessageList.js
-│  │  │  └─ index.js
-│  │  ├─ NavBar.js
-│  │  └─ Router.js
-│  ├─ index.js
-│  └─ util
-│     ├─ common.js
-│     └─ services
-│        └─ messages.js
-├─ config
-│  └─ common.js
-├─ index.html
-├─ index.js
-├─ jsconfig.json
-├─ package-lock.json
-├─ package.json
-├─ server
-│  ├─ .DS_Store
-│  ├─ const.ts
-│  ├─ graphql
-│  │  ├─ resolvers.ts
-│  │  └─ typeDefs.ts
-│  ├─ index.ts
-│  ├─ models
-│  │  ├─ authors.ts
-│  │  ├─ books.ts
-│  │  └─ user.ts
+│  ├─ package.json
 │  ├─ types
 │  │  └─ apollo-server-express4.d.ts
 │  ├─ types.ts

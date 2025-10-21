@@ -3,13 +3,20 @@
   "version": "1.0.0",
   "description": "A boilerplate",
   "main": "index.js",
+  "type": "module",
   "scripts": {
-    "dev": "nodemon index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev:server": "nodemon --exec tsx server/index.ts",
+    "dev:client": "cd client && vite",
+    "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\""
   },
   "engines": {
     "node": ">=20"
   },
+  "workspaces": [
+    "client",
+    "server"
+  ],
   "license": "ISC",
   "dependencies": {
     "@babel/core": "^7.8.3",
@@ -31,7 +38,6 @@
     "eslint-plugin-react": "^7.18.0",
     "express": "^4.17.1",
     "express-async-errors": "^3.1.1",
-    "fibers": "^4.0.2",
     "file-loader": "^5.0.2",
     "html-webpack-plugin": "^3.2.0",
     "mini-css-extract-plugin": "^0.9.0",
@@ -49,10 +55,14 @@
     "webpack-cli": "^3.3.10"
   },
   "devDependencies": {
+    "concurrently": "^9.2.1",
     "nodemon": "^2.0.2",
+    "vite": "^7.1.11",
     "webpack-dev-middleware": "^3.7.2",
     "webpack-dev-server": "^3.10.1",
-    "webpack-hot-middleware": "^2.25.0"
+    "webpack-hot-middleware": "^2.25.0",
+    "tsx": "^3.12.0",
+    "tsconfig-paths": "^4.2.0"
   },
   "nodemonConfig": {
     "ignore": [
