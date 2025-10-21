@@ -1,29 +1,27 @@
 import { ApolloServer } from '@apollo/server';
-import { startStandaloneServer } from '@apollo/server/standalone';
-import mongoose from 'mongoose';
-import dotenv from 'dotenv';
-import { resolvers } from './graphql/resolvers';
-import { typeDefs } from './graphql/typeDefs';
 import { expressMiddleware } from '@as-integrations/express4';
 import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer';
 import { makeExecutableSchema } from '@graphql-tools/schema';
 import express from 'express';
 import cors from 'cors';
 import http from 'http';
-// @ts-ignore
-import { useServer } from 'graphql-ws/use/ws';
+import mongoose from 'mongoose';
+import dotenv from 'dotenv';
+import { resolvers } from './graphql/resolvers';
+import { typeDefs } from './graphql/typeDefs';
 import User from './models/user';
 import jwt from 'jsonwebtoken';
 import { WebSocketServer } from 'ws';
+import { useServer } from 'graphql-ws/use/ws';
 
-mongoose.set('strictQuery', false);
+// 读取配置
 dotenv.config();
-
-const MONGODB_URI = process.env.MONGODB_URI;
+mongoose.set('strictQuery', false);
+const MONGODB_URI = process.env.MONGODB_URI!;
 console.log('connecting to', MONGODB_URI);
 
-mongoose
-  .connect(MONGODB_URI!)
+// 连接数据库
+mongoose.connect(MONGODB_URI)
   .then(() => {
     console.log('connected success to MongoDB');
   })
@@ -33,14 +31,11 @@ mongoose
 
 mongoose.set('debug', true);
 
-const start = async () => {
+export const createApolloServer = async () => {
   const app = express();
   const httpServer = http.createServer(app);
 
-  const wsServer = new WebSocketServer({
-    server: httpServer,
-    path: '/',
-  });
+  const wsServer = new WebSocketServer({ server: httpServer, path: '/' });
 
   const schema = makeExecutableSchema({ typeDefs, resolvers });
   const serverCleanup = useServer({ schema }, wsServer);
@@ -61,6 +56,7 @@ const start = async () => {
     ],
   });
 
+  // Ensure the server is started before middleware is applied
   await server.start();
 
   app.use(
@@ -69,12 +65,9 @@ const start = async () => {
     express.json(),
     expressMiddleware(server, {
       context: async ({ req }) => {
-        const auth = req ? req.headers.authorization : null;
+        const auth = req.headers.authorization;
         if (auth && auth.startsWith('Bearer ')) {
-          const decodedToken = jwt.verify(
-            auth.substring(7),
-            process.env.JWT_SECRET!
-          );
+          const decodedToken = jwt.verify(auth.substring(7), process.env.JWT_SECRET!);
           const currentUser = await User.findById(decodedToken?.id);
           return { currentUser };
         }
@@ -82,30 +75,5 @@ const start = async () => {
     })
   );
 
-  const PORT = 4000;
-
-  httpServer.listen(PORT, () =>
-    console.log(`Server is now running on http://localhost:${PORT}`)
-  );
+  return app;  // 返回Express应用实例
 };
-
-start();
-
-// startStandaloneServer(server, {
-//   listen: { port: 4000 },
-//   // context: async ({ req, res }) => {
-//   //   const auth = req ? req.headers.authorization : null;
-//   //   if (auth && auth.startsWith('Bearer ')) {
-//   //     const decodedToken = jwt.verify(
-//   //       auth.substring(7),
-//   //       process.env.JWT_SECRET
-//   //     );
-//   //     const currentUser = await User.findById(decodedToken.id).populate(
-//   //       'friends'
-//   //     );
-//   //     return { currentUser };
-//   //   }
-//   // },
-// }).then(({ url }) => {
-//   console.log(`Server ready at ${url}`);
-// });

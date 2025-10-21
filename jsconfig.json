@@ -15,6 +15,6 @@
       "@root/*": ["*"]
     }
   },
-  "include": ["server/index.ts", "models", "server/graphql", "server/types"],
+  "include": ["server/index.js", "models", "server/graphql", "server/types"],
   "exclude": ["node_modules", "dist"]
 }

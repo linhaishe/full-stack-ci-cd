@@ -8,7 +8,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev:server": "nodemon --exec tsx server/index.ts",
     "dev:client": "cd client && vite",
-    "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\""
+    "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
+    "test:dev": "tsx index.ts"
   },
   "engines": {
     "node": ">=20"
@@ -57,12 +58,12 @@
   "devDependencies": {
     "concurrently": "^9.2.1",
     "nodemon": "^2.0.2",
+    "tsconfig-paths": "^4.2.0",
+    "tsx": "^3.14.0",
     "vite": "^7.1.11",
     "webpack-dev-middleware": "^3.7.2",
     "webpack-dev-server": "^3.10.1",
-    "webpack-hot-middleware": "^2.25.0",
-    "tsx": "^3.12.0",
-    "tsconfig-paths": "^4.2.0"
+    "webpack-hot-middleware": "^2.25.0"
   },
   "nodemonConfig": {
     "ignore": [
@@ -72,9 +73,12 @@
     ]
   },
   "_moduleAliases": {
-    "@root": ".",
+    "@util": "server/util",
     "@controllers": "server/controllers",
     "@middleware": "server/middleware",
-    "@util": "server/util"
+    "@root": ".",
+    "Utilities": "client/util",
+    "Components": "client/components",
+    "Assets": "client/assets"
   }
 }
