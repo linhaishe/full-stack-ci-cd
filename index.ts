@@ -19,7 +19,7 @@ async function startServer() {
   app.use(cors())
 
   // 将ApolloServer挂载到 / 路由
-  app.use('/', await createApolloServer()) // 使用await
+  app.use('/api', await createApolloServer()) // 使用await
 
   // 后端热加载
   const watcher = chokidar.watch('server') // Watch server folder
@@ -47,6 +47,7 @@ async function startServer() {
 
     startVite() // 启动前端开发服务器
   } else {
+    console.log('生产环境ing')
     // 生产环境，提供静态文件
     const DIST_PATH = path.resolve(__dirname, './dist')
     const INDEX_PATH = path.resolve(DIST_PATH, 'index.html')

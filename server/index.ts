@@ -35,7 +35,7 @@ export const createApolloServer = async () => {
   const app = express();
   const httpServer = http.createServer(app);
 
-  const wsServer = new WebSocketServer({ server: httpServer, path: '/' });
+  const wsServer = new WebSocketServer({ server: httpServer, path: '/api/graphql' });
 
   const schema = makeExecutableSchema({ typeDefs, resolvers });
   const serverCleanup = useServer({ schema }, wsServer);

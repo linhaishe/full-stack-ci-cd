@@ -23,7 +23,7 @@ const authLink = setContext((_, { headers }) => {
 });
 
 const httpLink = createHttpLink({
-  uri: 'http://localhost:4000',
+  uri: import.meta.env.VITE_API_URL
 });
 
 // const client = new ApolloClient({
@@ -33,7 +33,7 @@ const httpLink = createHttpLink({
 
 const wsLink = new GraphQLWsLink(
   createClient({
-    url: 'ws://localhost:4000',
+    url: import.meta.env.VITE_WS_API_URL,
     on: {
       connected: () => console.log('WS 连接成功'),
       closed: (event) => console.log('WS 连接关闭', event),
