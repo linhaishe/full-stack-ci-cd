@@ -120,6 +120,7 @@ Write your frontend custom styles there. https://stackoverflow.com/questions/464
 ## Stuff left out on purpose ##
 
 Redux, GraphQL, database solution and css frameworks. You decide.
+
 ```
 full-stack-ci-cd
 ├─ .eslintignore
@@ -132,8 +133,6 @@ full-stack-ci-cd
 │  ├─ .eslintrc.cjs
 │  ├─ README.md
 │  ├─ index.html
-│  ├─ package-lock.json
-│  ├─ package.json
 │  ├─ public
 │  │  └─ vite.svg
 │  ├─ src
@@ -153,7 +152,6 @@ full-stack-ci-cd
 ├─ index.html
 ├─ index.ts
 ├─ jsconfig.json
-├─ package-lock.json
 ├─ package.json
 ├─ server
 │  ├─ .DS_Store
@@ -166,8 +164,6 @@ full-stack-ci-cd
 │  │  ├─ authors.ts
 │  │  ├─ books.ts
 │  │  └─ user.ts
-│  ├─ package-lock.json
-│  ├─ package.json
 │  ├─ types
 │  │  └─ apollo-server-express4.d.ts
 │  ├─ types.ts
@@ -175,6 +171,7 @@ full-stack-ci-cd
 │     ├─ common.js
 │     ├─ customErrors.js
 │     └─ routes.js
+├─ vite.config.js
 └─ webpack.config.js
 
 ```
