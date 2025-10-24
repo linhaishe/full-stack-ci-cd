@@ -1,0 +1,145 @@
+name: Deployment pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize]
+
+jobs:
+  simple_deployment_pipeline:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install dependencies
+        run: npm install
+      - name: Build
+        run: npm run build
+      - name: Deploy
+        # Only run this step if the branch is main
+        if: ${{ github.event_name == 'push' }}
+        env:
+          deploy_url: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
+        run: |
+          curl "$deploy_url"
+  tag_release:
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    needs: [simple_deployment_pipeline]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # 保证完整 git 历史，用于 tag
+
+      # 打印 GitHub context
+      - name: github context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "$GITHUB_CONTEXT"
+
+      # 打印 commits 信息
+      - name: commits
+        env:
+          COMMITS: ${{ toJson(github.event.commits) }}
+        run: echo "$COMMITS"
+
+      # 打印 commit messages
+      - name: commit messages
+        env:
+          COMMIT_MESSAGES: ${{ toJson(github.event.commits.*.message) }}
+        run: echo "$COMMIT_MESSAGES"
+
+      # 判断是否包含 #skip 用 jq 遍历 github.event.commits（支持多 commit）
+      - name: Check for #skip in commit messages
+        id: check_skip
+        run: |
+          SKIP=false
+          echo '${{ toJson(github.event.commits) }}' | jq -r '.[].message' | grep -q '#skip' && SKIP=true
+          echo "skip_tag=$SKIP" >> $GITHUB_OUTPUT
+
+      # 根据上一步结果决定是否执行 tag
+      - name: Bump patch version and push tag
+        if: steps.check_skip.outputs.skip_tag != 'true'
+        uses: anothrNick/github-tag-action@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG_PREFIX: v
+          DEFAULT_BUMP:
+            patch # 默认 patch bump
+            # ✅ 通知：成功时（只在 main 分支）
+      - name: Notify Discord on success
+        if: success() && github.ref == 'refs/heads/main'
+        uses: sarisia/actions-status-discord@v1
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          username: 'GitHub CI Bot'
+          title: '✅ Deployment Successful'
+          description: |
+            A new version of the app has been successfully deployed!
+            Branch: **${{ github.ref_name }}**
+            Commit: `${{ github.sha }}`
+            Author: `${{ github.actor }}`
+          color: '#00FF00'
+
+      # ❌ 通知：失败时（只在 main 分支）
+      - name: Notify Discord on failure
+        if: failure() && github.ref == 'refs/heads/main'
+        uses: sarisia/actions-status-discord@v1
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          username: 'GitHub CI Bot'
+          title: '❌ Build Failed'
+          description: |
+            The build failed on branch: **${{ github.ref_name }}**
+            Commit: `${{ github.sha }}`
+            Author: `${{ github.actor }}`
+          color: '#FF0000'
+  health-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check service health
+        uses: jtalk/url-health-check-action@v4
+        with:
+          # 🩺 你部署在 Render 的网站 URL
+          url: 'https://full-stack-ci-cd-8ykz.onrender.com'
+
+          # 可选参数👇
+          expected-statuses: 200
+          retry-times: 3
+          retry-interval: 10
+          follow-redirect: true
+
+      - name: Notify if health check failed
+        if: failure()
+        uses: sarisia/actions-status-discord@v1
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          username: 'GitHub Health Bot'
+          title: '❌ Health Check Failed'
+          description: |
+            The health check for the application has failed!
+            Branch: **${{ github.ref_name }}**
+            Commit: `${{ github.sha }}`
+            Actor: `${{ github.actor }}`
+          color: '#FF0000'
+      - name: Notify Discord if health check succeeded
+        if: success()
+        uses: sarisia/actions-status-discord@v1
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          username: 'GitHub Health Bot'
+          title: '✅ Health Check Passed'
+          description: |
+            The health check for the application succeeded.
+            Branch: **${{ github.ref_name }}**
+            Commit: `${{ github.sha }}`
+            Actor: `${{ github.actor }}`
+          color: '#00FF00'
