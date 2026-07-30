@@ -8,7 +8,7 @@ This boilerplate contains `React`, `express`, the required dependencies and a sm
 The folder structure is as follows:
 
 frontend / client
-
+```
 <pre>
 .
 ├── assets
@@ -26,9 +26,9 @@ frontend / client
 |   └── common.js
 └── index.js
 </pre>
-
+```
 backend / server
-
+```
 <pre>
 .
 ├── controllers
@@ -41,7 +41,7 @@ backend / server
 |   └── routes.js
 └── index.js
 </pre>
-
+```
 Most of which is familiar through the course. In addition there are the files in the root.
 
 ## root files ##
